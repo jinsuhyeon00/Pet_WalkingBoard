@@ -36,12 +36,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Board  b = listBundle.get(position);
+        Board  board = listBundle.get(position);
 
-        holder.PliceView.setText(b.getPlace());
-        holder.TimeView.setText(b.getTime());
-        holder.Dog_breedView.setText(b.getDog_breed());
-        holder.IDView.setText(b.getID());
+        holder.PliceView.setText(board.getPlace());
+        holder.TimeView.setText(board.getTime());
+        holder.Dog_breedView.setText(board.getDog_breed());
+        holder.IDView.setText(board.getID());
     }
 
     @Override

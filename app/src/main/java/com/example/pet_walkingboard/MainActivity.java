@@ -1,6 +1,7 @@
 package com.example.pet_walkingboard;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,7 +53,13 @@ public class MainActivity extends AppCompatActivity
         add = findViewById(R.id.floatingActionButton2);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerAdapter(listBundle);
+
         recyclerView.setAdapter(adapter);
+
+                    FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+                      DatabaseReference rootRef = firebaseDatabase.getReference();
+
+                     DatabaseReference BoardRef = rootRef.child("Bosrds");
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +76,11 @@ public class MainActivity extends AppCompatActivity
 
                 final AlertDialog dialog = builder.create();
 
+   //             FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+  //              DatabaseReference rootRef = firebaseDatabase.getReference();
+
+ //               DatabaseReference BoardRef = rootRef.child("Bosrds");
+
                 upload.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -76,15 +89,15 @@ public class MainActivity extends AppCompatActivity
                         String strDog = dog.getText().toString();
                         String  strid = id.getText().toString();
 
-                        FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
-                        DatabaseReference rootRef = firebaseDatabase.getReference();
+ //                       FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+ //                       DatabaseReference rootRef = firebaseDatabase.getReference();
 
                         Board board = new Board(strPlice, strTime, strDog, strid);
 
                         if(strPlice.length() == 0)return;
-                        listBundle.add(board);
+  //                      listBundle.add(board);
 
-                        DatabaseReference BoardRef = rootRef.child("Bosrds");
+   //                     DatabaseReference BoardRef = rootRef.child("Bosrds");
                         BoardRef.push().setValue(board);
 
                         BoardRef.addValueEventListener(new ValueEventListener() {
@@ -98,24 +111,38 @@ public class MainActivity extends AppCompatActivity
                                     String strTime = board.getTime();
                                     String strDog = board.getDog_breed();
                                     String  strid = board.getID();
-   //                                 buffer.append(listBundle);
+                                    buffer.append(listBundle);
                                 }
 
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-
                             }
                         });
-                        adapter.notifyDataSetChanged();
+
+                       // adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
                 });
+                adapter.notifyDataSetChanged();
                 dialog.show();
 
             }
         });
+        BoardRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Board board = snapshot.getValue(Board.class);
+                    listBundle.add(board);
+                }
+                adapter.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
          }
      }
