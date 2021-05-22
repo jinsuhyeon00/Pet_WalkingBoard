@@ -4,35 +4,32 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
-import android.app.ListActivity;
-import android.content.Context;
-import android.content.Intent;
-import android.app.Dialog;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.security.cert.PolicyNode;
 import java.util.ArrayList;
 
 
 
 public class MainActivity extends AppCompatActivity
      {
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+
 
     private final ArrayList<Board> listBundle = new ArrayList<>();
-    private DatabaseReference databaseReference = database.getReference();
 
    private  RecyclerView recyclerView;
    private RecyclerAdapter adapter;
@@ -55,12 +52,6 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerAdapter(listBundle);
         recyclerView.setAdapter(adapter);
-
-  //      final Button btnUp = findViewById(R.id.btnUp);
-   //     final EditText PliceText = findViewById(R.id.PliceText);
-   //     final EditText TimeText = findViewById(R.id.TimeText);
-   //     final EditText Dog_breedText = findViewById(R.id.Dog_breedText);
-   //     final EditText IDText = findViewById(R.id.IDText);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,9 +76,38 @@ public class MainActivity extends AppCompatActivity
                         String strDog = dog.getText().toString();
                         String  strid = id.getText().toString();
 
-                        if(strPlice.length() == 0)return;
-                        listBundle.add(new Board(strPlice, strTime, strDog, strid));
+                        FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+                        DatabaseReference rootRef = firebaseDatabase.getReference();
 
+                        Board board = new Board(strPlice, strTime, strDog, strid);
+
+                        if(strPlice.length() == 0)return;
+                        listBundle.add(board);
+
+                        DatabaseReference BoardRef = rootRef.child("Bosrds");
+                        BoardRef.push().setValue(board);
+
+                        BoardRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                StringBuffer buffer = new StringBuffer();
+
+                                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                   Board board = snapshot.getValue(Board.class);
+                                    String  strPlice = board.getPlace();
+                                    String strTime = board.getTime();
+                                    String strDog = board.getDog_breed();
+                                    String  strid = board.getID();
+   //                                 buffer.append(listBundle);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -96,22 +116,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-/*
-        btnUp.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(PliceText.getText().toString().length() == 0)return;
-                listBundle.add(new Board(PliceText.getText().toString(), TimeText.getText().toString(), Dog_breedText.getText().toString(),IDText.getText().toString()));
-                adapter.notifyDataSetChanged();
-              PliceText.setText("");
-             TimeText.setText("");
-             Dog_breedText.setText("");
-             IDText.setText("");
-
-            }
-         }
-        );
-*/
 
          }
      }

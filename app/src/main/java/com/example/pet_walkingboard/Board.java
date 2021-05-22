@@ -13,6 +13,7 @@ public class Board {
         this.ID = ID;
 
     }
+    public Board(){}
     public String getPlace(){
         return Place;
     }
