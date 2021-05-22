@@ -30,7 +30,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
-                        android:text="산책 장소"
+                        android:text="산책 장소 :"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
 
@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
-                        android:text="산책 예상 시간"
+                        android:text="산책 예상 시간 :"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
 
@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
-                        android:text="강아지 종"
+                        android:text="강아지 종 :"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
 
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
-                        android:text="카카오톡 ID"
+                        android:text="카카오톡 ID :"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
 

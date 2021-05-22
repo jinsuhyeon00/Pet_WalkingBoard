@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "367895291226",
+    "project_id": "pet-walking-95950",
+    "storage_bucket": "pet-walking-95950.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367895291226:android:681e5aa6e27a7c20167f63",
+        "android_client_info": {
+          "package_name": "com.example.pet_walkingboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367895291226-km8p9gi8dm473ejq7e1o8utdodi28l88.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pet_walkingboard",
+            "certificate_hash": "353a1480ae629aba3e9929bb9baa0f5145c14fe4"
+          }
+        },
+        {
+          "client_id": "367895291226-kku0s10n4lbgtq5qhrte390afh6p37i2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO4FuxS_5ovIT1VB3Y03-5iyzezg8lODk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367895291226-kku0s10n4lbgtq5qhrte390afh6p37i2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

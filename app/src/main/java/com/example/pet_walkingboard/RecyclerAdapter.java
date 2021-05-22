@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.function.BiPredicate;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     ArrayList<Board> listBundle = new ArrayList<>();
     Context mContext;
 
@@ -49,6 +49,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return listBundle.size();
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder{
          TextView PliceView;
          TextView TimeView;
@@ -63,5 +65,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             IDView = View.findViewById(R.id.list_ID);
         }
     }
+
 
 }
