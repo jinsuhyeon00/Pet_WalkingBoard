@@ -27,8 +27,7 @@ import java.util.ArrayList;
 
 
 
-public class MainActivity extends AppCompatActivity
-     {
+public class MainActivity extends AppCompatActivity {
 
 
     private final ArrayList<Board> listBundle = new ArrayList<>();
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 StringBuffer buffer = new StringBuffer();
-
+                                listBundle.clear();
                                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                                    Board board = snapshot.getValue(Board.class);
                                     String  strPlice = board.getPlace();
@@ -112,24 +111,26 @@ public class MainActivity extends AppCompatActivity
                                     String strDog = board.getDog_breed();
                                     String  strid = board.getID();
                                     buffer.append(listBundle);
+
+                                    listBundle.add(board);
                                 }
 
+                                adapter.notifyDataSetChanged();
                             }
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
                             }
                         });
 
-                       // adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
                 });
-                adapter.notifyDataSetChanged();
+               // adapter.notifyDataSetChanged();
                 dialog.show();
 
             }
         });
-        BoardRef.addListenerForSingleValueEvent(new ValueEventListener() {
+  /*      BoardRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -144,5 +145,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+   */
          }
      }
