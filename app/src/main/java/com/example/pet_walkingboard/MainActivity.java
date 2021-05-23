@@ -3,8 +3,12 @@ package com.example.pet_walkingboard;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
 
@@ -29,14 +33,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private final ArrayList<Board> listBundle = new ArrayList<>();
 
    private  RecyclerView recyclerView;
    private RecyclerAdapter adapter;
    private  RecyclerView.LayoutManager layoutManager;
 
-   private FloatingActionButton add;
+   private FloatingActionButton add, look;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +53,19 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
         ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
+
         add = findViewById(R.id.floatingActionButton2);
+        look = findViewById(R.id.floatingActionButton);
+
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerAdapter(listBundle);
 
         recyclerView.setAdapter(adapter);
 
-                    FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
-                      DatabaseReference rootRef = firebaseDatabase.getReference();
 
-                     DatabaseReference BoardRef = rootRef.child("Bosrds");
+         FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+         DatabaseReference rootRef = firebaseDatabase.getReference();
+         DatabaseReference BoardRef = rootRef.child("Bosrds");
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                                     listBundle.add(board);
                                 }
 
-                                adapter.notifyDataSetChanged();
+                               adapter.notifyDataSetChanged();
                             }
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
@@ -123,10 +130,50 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                         dialog.dismiss();
+                        Toast.makeText(getApplicationContext(),"저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+                //adapter.notifyDataSetChanged();
+                dialog.show();
+
+            }
+
+        });
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+               // adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        look.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BoardRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        StringBuffer buffer = new StringBuffer();
+                        listBundle.clear();
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            Board board = snapshot.getValue(Board.class);
+                            String  strPlice = board.getPlace();
+                            String strTime = board.getTime();
+                            String strDog = board.getDog_breed();
+                            String  strid = board.getID();
+                            buffer.append(listBundle);
+
+                            listBundle.add(board);
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-               // adapter.notifyDataSetChanged();
-                dialog.show();
+
 
             }
         });
@@ -147,4 +194,13 @@ public class MainActivity extends AppCompatActivity {
         });
    */
          }
-     }
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void sampleMethod() {
+
+    }
+
+
+
+}
+
+
