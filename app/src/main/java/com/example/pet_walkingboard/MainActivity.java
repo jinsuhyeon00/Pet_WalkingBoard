@@ -14,8 +14,11 @@ import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,7 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import android.widget.ArrayAdapter;
 import java.security.cert.PolicyNode;
 import java.util.ArrayList;
 
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final ArrayList<Board> listBundle = new ArrayList<>();
 
-   private  RecyclerView recyclerView;
+    private  RecyclerView recyclerView;
    private RecyclerAdapter adapter;
    private  RecyclerView.LayoutManager layoutManager;
 
@@ -76,10 +79,19 @@ public class MainActivity extends AppCompatActivity {
 
                 final Button upload = view.findViewById(R.id.btnUp);
                 final EditText Plice = view.findViewById(R.id.PliceText);
-                final EditText Time = view.findViewById(R.id.TimeText);
+                final Spinner Time = view.findViewById(R.id.Timetext);
                 final EditText dog  =  view.findViewById(R.id.Dog_breedText);
                 final EditText id = view.findViewById(R.id.IDText);
-
+                ArrayAdapter timee = ArrayAdapter.createFromResource(MainActivity.this, R.array.timee, android.R.layout.simple_spinner_dropdown_item);
+                timee.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                Time.setAdapter(timee);
+                Time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) { }
+                });
                 final AlertDialog dialog = builder.create();
 
    //             FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
@@ -91,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         String strPlice = Plice.getText().toString();
-                        String strTime = Time.getText().toString();
+                        String strTime = Time.getSelectedItem().toString();
                         String strDog = dog.getText().toString();
                         String  strid = id.getText().toString();
 
